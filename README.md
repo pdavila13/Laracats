@@ -1,0 +1,2 @@
+# Laracats
+Example Laracats code
