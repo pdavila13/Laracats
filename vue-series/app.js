@@ -1,8 +1,16 @@
 new Vue({
 	el: '#tasks',
-	
 
 	data: {
-		heading: 'Hello world!'
+		tasks: [
+			{ body: 'Go to the store', completed: false }
+		]
+	},
+
+	methods: {
+		addTask: function() {
+			alert('adding a task');
+		}
 	}
+
 })
