@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">	
+	<meta charset="UTF-8">
+
 	<title>Vue-series</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="app.css">
 </head>
 <body>
 
@@ -11,30 +15,58 @@
 
 		<div id="tasks">
 			
-			<div>
-				<h1>Tasks</h1>
+			<div v-show="remaining.length">
+				<h1>Tasks ({{ remaining.length }})</h1>
 
 				<ol class="list-group">
-					<li v-repeat="task: tasks" class="list-group-item"> 
-						{{ task.body }}
+					<li v-repeat="task: tasks | inProcess" class="list-group-item"> 
+						<span v-on="dbclick: editTask(task)">
+
+							{{ task.body }}
+							
+						</span>
+
+						<button v-on="click: removeTask(task)">&#10007;</button>
+						<!--<button v-on="click: completeTask(task)">&#10004;</button>-->
+						<button v-on="click: toggleTaskCompletion(task)">&#10004;</button>
 					</li>
 				</ol>
 			</div>
 
 			<form v-on="submit: addTask">
 				<div class="form-group">
-					<input class="form-control" placeholder="I need to...">
+					<input v-model="newTask" v-el="newTask" class="form-control" placeholder="I need to...">
 				</div>
 
 				<button class="btn btn-primary">Add Taks</button>
-			</form>
+				<button v-on="click: completeAll" class="btn btn-default">Mark all as completed?</button>
+			</form> 
 
+
+			<div v-if="completions.length">
+				<h2>Completed ({{ completions.length }})</h2>
+
+				<ol class="list-group">
+					<li v-repeat="task: tasks | filterBy true in completed" class="list-group-item"> 
+
+						{{ task.body }}
+
+						<button v-on="click: toggleTaskCompletion(task)">&#10007;</button>
+					</li>
+
+				</ol>
+
+				<button v-on="click: clearCompleted" class="btn btn-danger">Clear completed</button>
+			</div>
+
+			<!--
+			<pre> {{ $data | json }} </pre>
+			-->
 		</div>
 		
 	</div>
 
-	
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.4/vue.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js"></script>
 	<script src="app.js"></script>
 
 </body>
